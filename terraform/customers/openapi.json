@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "${awsAccountName}",
+        "version": "1.0"
+    },
+    "paths": {
+        "/customers/{customerId}": {
+            "get": {
+                "operationId": "GetCustomer",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GetCustomer 200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCustomerResponseContent"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "ValidationException 400 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationExceptionResponseContent"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NotFoundError 404 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFoundErrorResponseContent"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "InternalFailureError 500 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InternalFailureErrorResponseContent"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "type": "aws_proxy",
+                    "uri": "arn:aws:apigateway:${awsRegion}:lambda:path/2015-03-31/functions/${getCustomerLambdaArn}/invocations",
+                    "httpMethod": "POST",
+                    "passthroughBehavior": "when_no_match"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "id",
+                    "name",
+                    "phoneNumber"
+                ]
+            },
+            "GetCustomerResponseContent": {
+                "type": "object",
+                "properties": {
+                    "customer": {
+                        "$ref": "#/components/schemas/Customer"
+                    }
+                },
+                "required": [
+                    "customer"
+                ]
+            },
+            "InternalFailureErrorResponseContent": {
+                "type": "object",
+                "description": "An internal failure at the fault of the server",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "An error message"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            },
+            "NotFoundErrorResponseContent": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "An error message"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            },
+            "ValidationExceptionField": {
+                "type": "object",
+                "description": "Describes one specific validation failure for an input member.",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "A JSONPointer expression to the structure member whose value failed to satisfy the modeled constraints."
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A detailed description of the validation failure."
+                    }
+                },
+                "required": [
+                    "message",
+                    "path"
+                ]
+            },
+            "ValidationExceptionResponseContent": {
+                "type": "object",
+                "description": "A standard error for input validation failures.\nThis should be thrown by services when a member of the input structure\nfalls outside of the modeled or documented constraints.",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "A summary of the validation failure."
+                    },
+                    "fieldList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationExceptionField"
+                        },
+                        "description": "A list of specific failures encountered while validating the input.\nA member can appear in this list more than once if it failed to satisfy multiple constraints."
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            }
+        }
+    }
+}
