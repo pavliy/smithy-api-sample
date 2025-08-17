@@ -1,11 +1,11 @@
 {
-  "name": "customers",
+  "name": "@packages/customers",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --noemit && node --loader ts-node/esm build.ts",
+    "build": "node ./node_modules/typescript/bin/tsc --noemit && node --loader ts-node/esm build.ts",
     "build:smithy": "smithy build",
     "postbuild:smithy": "cpy output/open-api-terraform/openapi/CustomerRegistryApi.openapi.json ../../terraform/customers --rename=openapi.json --flat --overwrite"
   },
@@ -24,6 +24,8 @@
     "@types/node": "^24.0.15",
     "cpy-cli": "^6.0.0",
     "esbuild": "^0.25.7",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.9.2"
   }
 }
