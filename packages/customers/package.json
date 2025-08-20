@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build:smithy": "smithy build && pnpm i && pnpm --filter @packages/customers-ssdk build",
+    "build:smithy": "rm -rf output && smithy build && pnpm i && pnpm --filter @packages/customers-ssdk build",
     "postbuild:smithy": "cp output/open-api-terraform/openapi/CustomersRegistryApi.openapi.json ../../terraform/customers/openapi.json",
     "build": "node ./node_modules/typescript/bin/tsc --noemit && node --loader ts-node/esm build.ts"
   },

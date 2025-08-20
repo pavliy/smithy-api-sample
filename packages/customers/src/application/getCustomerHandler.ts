@@ -8,7 +8,7 @@ export class GetCustomerHandler {
     public async handle(input: GetCustomerInput): Promise<GetCustomerOutput> {
         const customer = await this.customersRepository.findById(input.customerId);
         if (!customer) {
-            throw new NotFoundError({ message: "" });
+            throw new NotFoundError({ message: `Customer with id ${input.customerId} was not found` });
         }
 
         return {
