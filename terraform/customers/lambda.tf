@@ -1,8 +1,9 @@
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "../../packages/customers/dist/index.mjs"
+  source_dir = "../../packages/customers/dist"
   output_path = "../../packages/customers/dist/index.zip"
+  excludes = [ "index.zip", "._*" ]
 }
 
 resource "aws_lambda_function" "customers" {
