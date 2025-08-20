@@ -8,7 +8,7 @@ use smithy.framework#ValidationException
 @service(sdkId: "CustomersRegistry")
 @restJson1
 @title("${awsAccountName}")
-service CustomerRegistryApi {
+service CustomersRegistryApi {
     version: "1.0"
     operations: [
         GetCustomer,

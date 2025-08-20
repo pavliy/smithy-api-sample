@@ -1,7 +1,9 @@
 import type { BuildOptions } from 'esbuild';
+import copy from 'esbuild-plugin-copy';
 
 const isCi = process.env.CI === 'true';
 const distPath = './dist';
+
 const esbuildConfig: BuildOptions = {
 	entryPoints: ['src/index.ts'],
 	bundle: true,
@@ -14,6 +16,15 @@ const esbuildConfig: BuildOptions = {
 	target: 'ESNext',
 	platform: 'node',
 	outfile: `${distPath}/index.mjs`,
+	plugins: [
+		copy({
+			assets: {
+				from: ['./node_modules/re2-wasm/build/wasm/re2.wasm'],
+				to: ['./'],
+			},
+			verbose: true,
+		}),
+	],
 	// https://github.com/evanw/esbuild/pull/2067
 	banner: {
 		js: `
