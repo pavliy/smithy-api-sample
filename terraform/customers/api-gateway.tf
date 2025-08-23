@@ -43,6 +43,12 @@ resource "aws_lambda_permission" "apigw_invoke" {
 resource "aws_api_gateway_deployment" "customers" {
   depends_on  = [aws_api_gateway_integration.lambda_get_customer]
   rest_api_id = aws_api_gateway_rest_api.customers.id
+  triggers = {
+    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.customers.body))
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_stage" "prod" {
