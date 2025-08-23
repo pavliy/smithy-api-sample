@@ -1,0 +1,108 @@
+{
+  "version": "2.0",
+  "sources": [
+    "src/application/contracts"
+  ],
+  "maven": {
+    "dependencies": [
+      "software.amazon.smithy.typescript:smithy-aws-typescript-codegen:0.34.0",
+      "software.amazon.smithy:smithy-aws-apigateway-openapi:1.58.0",
+      "software.amazon.smithy:smithy-aws-traits:1.58.0",
+      "software.amazon.smithy:smithy-cli:1.58.0",
+      "software.amazon.smithy:smithy-model:1.58.0",
+      "software.amazon.smithy:smithy-openapi:1.58.0",
+      "software.amazon.smithy:smithy-validation-model:1.58.0"
+    ]
+  },
+  "outputDirectory": "output",
+  "projections": {
+    "open-api-terraform": {
+      "transforms": [
+        {
+          "name": "includeServices",
+          "args": {
+            "services": [
+              "uk.co.samplecompany#CustomersRegistryApi"
+            ]
+          }
+        }
+      ],
+      "plugins": {
+        "openapi": {
+          "service": "uk.co.samplecompany#CustomersRegistryApi",
+          "apiGatewayDefaults": "2023-08-11",
+          "protocol": "aws.protocols#restJson1",
+          "disableCloudFormationSubstitution": true,
+          "version": "3.0.2"
+        }
+      }
+    },
+    "open-api": {
+      "transforms": [
+        {
+          "name": "includeServices",
+          "args": {
+            "services": [
+              "uk.co.samplecompany#CustomersRegistryApi"
+            ]
+          }
+        },
+        {
+            "name": "excludeTraits",
+            "args": {
+                "traits": [
+                "aws.apigateway#integration"
+              ]
+            }
+        }
+      ],
+      "plugins": {
+        "openapi": {
+          "service": "uk.co.samplecompany#CustomersRegistryApi",
+          "jsonAdd": {
+            "/servers": [
+              {
+                "url": "https://api.samplecompany.co.uk",
+                "description": "Production"
+              }
+            ],
+            "/info/title": "customers"
+          },
+          "protocol": "aws.protocols#restJson1",
+          "version": "3.0.2",
+          "tags": true
+        }
+      }
+    },
+    "ts-server": {
+      "transforms": [
+        {
+          "name": "excludeShapesByTag",
+          "args": {
+            "tags": [
+              "client-only"
+            ]
+          }
+        },
+        {
+          "name": "includeServices",
+          "args": {
+            "services": [
+              "uk.co.samplecompany#CustomersRegistryApi"
+            ]
+          }
+        }
+      ],
+      "plugins": {
+        "typescript-ssdk-codegen": {
+          "service": "uk.co.samplecompany#CustomersRegistryApi",
+          "package": "@packages/customers-ssdk",
+          "packageVersion": "0.0.1",
+          "packageManager": "npm",
+          "createDefaultReadme": true,
+          "requiredMemberMode": "strict"
+        }
+      }
+    }
+  }
+}

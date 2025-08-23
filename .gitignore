@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 
 # Other
 ._package.json
+packages/customers/output/
