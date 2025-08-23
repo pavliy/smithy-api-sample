@@ -37,6 +37,43 @@
         }
       }
     },
+    "open-api": {
+      "transforms": [
+        {
+          "name": "includeServices",
+          "args": {
+            "services": [
+              "uk.co.samplecompany#CustomersRegistryApi"
+            ]
+          }
+        },
+        {
+            "name": "excludeTraits",
+            "args": {
+                "traits": [
+                "aws.apigateway#integration"
+              ]
+            }
+        }
+      ],
+      "plugins": {
+        "openapi": {
+          "service": "uk.co.samplecompany#CustomersRegistryApi",
+          "jsonAdd": {
+            "/servers": [
+              {
+                "url": "https://api.samplecompany.co.uk",
+                "description": "Production"
+              }
+            ],
+            "/info/title": "customers"
+          },
+          "protocol": "aws.protocols#restJson1",
+          "version": "3.0.2",
+          "tags": true
+        }
+      }
+    },
     "ts-server": {
       "transforms": [
         {
